@@ -46,7 +46,7 @@
     <h1>Previsão do Tempo</h1>
 </div>
 <div class="container">
-    <p>Coloque sua cidade: <input type="text" id="input_cidade"> <button onclick="resultado()">Resultado</button></p>
+    <p>Coloque sua cidade: <input type="text" id="input_cidade"> <button onclick="redirectToResultado()">Resultado</button></p>
 </div>
 <footer>
     Trabalho desenvolvido por:
@@ -55,5 +55,13 @@
     <a href="https://github.com/pedrorenan" style="color: #FFF;">Pedro Renan</a>,
     <a href="https://github.com/vitortavares1" style="color: #FFF;">Vitor Tavares</a>
 </footer>
+
+<script>
+    function redirectToResultado() {
+        var cidade = document.getElementById("input_cidade").value;
+        window.location.href = "result.html?cidade=" + encodeURIComponent(cidade);
+    }
+</script>
+
 </body>
 </html>
