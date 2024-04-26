@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <style>
+        body {
+            background-color: #E0F2F7;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #0B2F3A;
+            color: #FFF;
+            text-align: center;
+            padding: 20px 0;
+        }
+        h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Clima da Cidade de <span id="cityName"></span></h1>
+</div>
+
+<script>
+    // Extrai o nome da cidade da URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var cidade = urlParams.get('cidade');
+
+    // Exibe o nome da cidade na página
+    document.getElementById('cityName').innerText = cidade;
+</script>
+
+</body>
+</html>
