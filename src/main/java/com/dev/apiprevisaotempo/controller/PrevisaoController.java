@@ -1,8 +1,9 @@
 package com.dev.apiprevisaotempo.controller;
 
 
+import com.dev.apiprevisaotempo.DTO.CidadePrev;
+import com.dev.apiprevisaotempo.DTO.Previsao;
 import com.dev.apiprevisaotempo.entity.Cidade;
-import com.dev.apiprevisaotempo.entity.Previsao;
 import com.dev.apiprevisaotempo.repository.PrevisaoRepository;
 import com.dev.apiprevisaotempo.service.PrevisaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,9 @@ public class PrevisaoController {
     private PrevisaoRepository previsaoRepository;
 
     @GetMapping("/previsao")
-    public ResponseEntity buscarCidades(@RequestParam String codLocalidade) {
-        Previsao previsao = previsaoService.listarPrevisao(codLocalidade);
-        /*for (Previsao previsao : previsoes) {
-            previsaoRepository.insert(previsao);
-        }*/
-        return ResponseEntity.ok().body(previsao);
+    public ResponseEntity<CidadePrev> buscarCidades(@RequestParam String codLocalidade) {
+        CidadePrev cidade = previsaoService.listarPrevisao(codLocalidade);
+
+        return ResponseEntity.ok().body(cidade);
     }
 }

@@ -1,6 +1,6 @@
 package com.dev.apiprevisaotempo.repository;
 
-import com.dev.apiprevisaotempo.entity.Previsao;
+import com.dev.apiprevisaotempo.DTO.Previsao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +18,7 @@ public class PrevisaoRepository {
 
     public Previsao insert(Previsao previsao) {
         //jdbcTemplate.update(INSERT,previsao.getNome(),previsao.getUf(),previsao.getAtualizacao(),previsao.getDia(),previsao.getTempo(),previsao.getMaxima(),previsao.getMinima(),previsao.getIuv());
-        jdbcTemplate.update(INSERT,previsao.getNome(),previsao.getUf(),previsao.getAtualizacao());
+        jdbcTemplate.update(INSERT,previsao.getDia(),previsao.getTempo(),previsao.getMaxima(),previsao.getMinima(),previsao.getIuv());
         return previsao;
     }
 }

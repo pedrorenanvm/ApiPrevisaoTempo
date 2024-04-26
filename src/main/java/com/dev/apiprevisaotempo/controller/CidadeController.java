@@ -23,6 +23,7 @@ public class CidadeController {
         Cidade[] cidades = localidadeService.buscarCidades(nomeCidade);
         for (Cidade cidade : cidades) {
             cidadeRepository.insert(cidade);
+            //Se a cidade já estiver no banco de dados, deve tratar essa exceção.
         }
         return ResponseEntity.ok().build();
     }
