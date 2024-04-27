@@ -1,8 +1,11 @@
 package com.dev.apiprevisaotempo.service.impl;
 
+import com.dev.apiprevisaotempo.dto.ForecastRequest;
 import com.dev.apiprevisaotempo.entity.City;
 import com.dev.apiprevisaotempo.repository.CityRepository;
 import com.dev.apiprevisaotempo.service.CityService;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
@@ -17,6 +20,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,11 +35,10 @@ public class CityDataServiceImpl implements CityService {
     }
 
 
-    public void fetchAndSaveCities() {
-        String citiesUrl = "http://servicos.cptec.inpe.br/XML/listaCidades";
+    public void fetchAndSaveCities(ForecastRequest forecastRequest) {
+        String citiesUrl = "http://servicos.cptec.inpe.br/XML/listaCidades?city=" + forecastRequest ;
         RestTemplate restTemplate = new RestTemplate();
         String xmlResponse = restTemplate.getForObject(citiesUrl, String.class);
-
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -43,9 +48,9 @@ public class CityDataServiceImpl implements CityService {
 
             NodeList cityNodes = doc.getElementsByTagName("cidade");
 
-            for (int i = 0; i < cityNodes.getLength(); i++) {
-                Node cityNode = cityNodes.item(i);
-                if (cityNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                Node cityNode = cityNodes.item(0);
+
                     Element cityElement = (Element) cityNode;
                     String cityName = cityElement.getElementsByTagName("nome").item(0).getTextContent();
                     String uf = cityElement.getElementsByTagName("uf").item(0).getTextContent();
@@ -55,11 +60,30 @@ public class CityDataServiceImpl implements CityService {
                     city.setId(Long.parseLong(cityId));
                     city.setNome(cityName);
                     city.setUf(uf);
+                    city.setAtualizacao(LocalDate.now());
                     cityRepository.save(city);
-                }
-            }
+
+
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void buscarCidades(String nomeCidade){
+        String cidadeCodificada;
+        cidadeCodificada = URLEncoder.encode(nomeCidade, StandardCharsets.UTF_8);
+        String url = "http://servicos.cptec.inpe.br/XML/listaCidades?city=" + cidadeCodificada;
+        RestTemplate restTemplate = new RestTemplate();
+        MappingJackson2XmlHttpMessageConverter converter = new MappingJackson2XmlHttpMessageConverter();
+        converter.setObjectMapper(new XmlMapper());
+        restTemplate.getMessageConverters().add(converter);
+        City[] cities = restTemplate.getForObject(url, City[].class);
+
+        for (City city : cities) {
+            if (cityRepository.findByNome(city.getNome()) == null) {
+                cityRepository.save(city);
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -28,7 +29,7 @@ public class City implements Serializable {
     @JsonAlias("nome")
     private String nome;
     @JsonAlias("atualizacao")
-    private String atualizacao;
+    private LocalDate atualizacao;
     @JsonAlias("uf")
     private String uf;
 

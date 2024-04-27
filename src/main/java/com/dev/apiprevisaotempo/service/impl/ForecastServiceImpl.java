@@ -5,6 +5,7 @@ import com.dev.apiprevisaotempo.entity.City;
 import com.dev.apiprevisaotempo.entity.Forecast;
 import com.dev.apiprevisaotempo.repository.CityRepository;
 import com.dev.apiprevisaotempo.repository.ForecastRepository;
+import com.dev.apiprevisaotempo.service.CityService;
 import com.dev.apiprevisaotempo.service.ForecastService;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ import org.springframework.web.client.RestTemplate;
 public class ForecastServiceImpl implements ForecastService {
 
     private final CityRepository cityRepository;
+
+    private final CityService cityService;
     private final ForecastRepository forecastRepository;
     @Autowired
-    public ForecastServiceImpl(CityRepository cityRepository, ForecastRepository forecastRepository) {
+    public ForecastServiceImpl(CityRepository cityRepository, CityService cityService, ForecastRepository forecastRepository) {
         this.cityRepository = cityRepository;
+        this.cityService = cityService;
         this.forecastRepository = forecastRepository;
     }
 
@@ -30,6 +34,9 @@ public class ForecastServiceImpl implements ForecastService {
 
     @Override
     public City getForecastByCityName(ForecastRequest forecastRequest) {
+        String name = forecastRequest.getCityName();
+        cityService.buscarCidades(name);
+
         City city = cityRepository.findByNome(forecastRequest.getCityName());
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://servicos.cptec.inpe.br/XML/cidade/" + city.getId() + "/previsao.xml";
