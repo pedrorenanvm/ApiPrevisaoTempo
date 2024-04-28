@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
-import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -24,12 +22,16 @@ public class Forecast implements Serializable {
 
     @JsonAlias("dia")
     private String dia;
+
     @JsonAlias("tempo")
     private String tempo;
+
     @JsonAlias("maxima")
     private int maxima;
+
     @JsonAlias("minima")
     private int minima;
+
     @JsonAlias("iuv")
     private double iuv;
 

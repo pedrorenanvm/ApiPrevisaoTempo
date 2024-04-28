@@ -21,6 +21,20 @@
             margin: 0;
             font-size: 30px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #0B2F3A;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -28,13 +42,45 @@
     <h1>Clima da Cidade de <span id="cityName"></span></h1>
 </div>
 
+<table id="forecastTable">
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Temperatura Máxima</th>
+        <th>Temperatura Mínima</th>
+        <th>IUV</th>
+    </tr>
+    </thead>
+    <tbody id="forecastBody">
+    <!-- Os dados serão preenchidos aqui dinamicamente -->
+    </tbody>
+</table>
+
 <script>
-    // Extrai o nome da cidade da URL
     var urlParams = new URLSearchParams(window.location.search);
     var cidade = urlParams.get('cidade');
 
-    // Exibe o nome da cidade na página
     document.getElementById('cityName').innerText = cidade;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8080/forecast/city", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var resposta = JSON.parse(xhr.responseText);
+            var previsoes = resposta.previsoes;
+            var tableBody = document.getElementById('forecastBody');
+            previsoes.forEach(function(previsao) {
+                var row = document.createElement('tr');
+                row.innerHTML = '<td>' + previsao.dia + '</td>' +
+                    '<td>' + previsao.maxima + '°C</td>' +
+                    '<td>' + previsao.minima + '°C</td>' +
+                    '<td>' + previsao.iuv + '</td>';
+                tableBody.appendChild(row);
+            });
+        }
+    };
+    xhr.send(JSON.stringify({ cidade: cidade }));
 </script>
 
 </body>

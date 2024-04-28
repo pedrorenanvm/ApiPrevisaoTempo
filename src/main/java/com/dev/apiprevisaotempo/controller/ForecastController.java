@@ -1,7 +1,7 @@
 package com.dev.apiprevisaotempo.controller;
 
-import com.dev.apiprevisaotempo.dto.ForecastRequest;
-import com.dev.apiprevisaotempo.entity.City;
+import com.dev.apiprevisaotempo.dto.request.ForecastRequest;
+import com.dev.apiprevisaotempo.dto.response.CityResponse;
 import com.dev.apiprevisaotempo.entity.Forecast;
 import com.dev.apiprevisaotempo.service.ForecastService;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,9 @@ public class ForecastController {
         return ResponseEntity.ok(forecastService.getForecastByCityId(idCity));
     }
 
-    @GetMapping("/city")
-    public ResponseEntity<City> getForecastByCityName(@RequestBody ForecastRequest cityName) {
+    @CrossOrigin(origins = "*")
+    @PostMapping("/city")
+    public ResponseEntity<CityResponse> getForecastByCityName(@RequestBody ForecastRequest cityName) {
         return ResponseEntity.ok(forecastService.getForecastByCityName(cityName));
     }
 

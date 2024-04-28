@@ -1,4 +1,4 @@
-package com.dev.apiprevisaotempo.dto;
+package com.dev.apiprevisaotempo.dto.request;
 
 import lombok.Data;
 

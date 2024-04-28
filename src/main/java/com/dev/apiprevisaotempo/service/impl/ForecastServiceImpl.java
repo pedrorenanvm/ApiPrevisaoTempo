@@ -1,31 +1,32 @@
 package com.dev.apiprevisaotempo.service.impl;
 
-import com.dev.apiprevisaotempo.dto.ForecastRequest;
+import com.dev.apiprevisaotempo.dto.request.ForecastRequest;
+import com.dev.apiprevisaotempo.dto.response.CityResponse;
 import com.dev.apiprevisaotempo.entity.City;
 import com.dev.apiprevisaotempo.entity.Forecast;
+import com.dev.apiprevisaotempo.mapper.CityMapper;
 import com.dev.apiprevisaotempo.repository.CityRepository;
 import com.dev.apiprevisaotempo.repository.ForecastRepository;
 import com.dev.apiprevisaotempo.service.CityService;
 import com.dev.apiprevisaotempo.service.ForecastService;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+@AllArgsConstructor
 @Service
 public class ForecastServiceImpl implements ForecastService {
 
     private final CityRepository cityRepository;
 
-    private final CityService cityService;
     private final ForecastRepository forecastRepository;
-    @Autowired
-    public ForecastServiceImpl(CityRepository cityRepository, CityService cityService, ForecastRepository forecastRepository) {
-        this.cityRepository = cityRepository;
-        this.cityService = cityService;
-        this.forecastRepository = forecastRepository;
-    }
+
+    private final CityService cityService;
+
+    private final CityMapper cityMapper;
+
 
     @Override
     public Forecast getForecastByCityId(Long idCity) {
@@ -33,7 +34,7 @@ public class ForecastServiceImpl implements ForecastService {
     }
 
     @Override
-    public City getForecastByCityName(ForecastRequest forecastRequest) {
+    public CityResponse getForecastByCityName(ForecastRequest forecastRequest) {
         String name = forecastRequest.getCityName();
         cityService.buscarCidades(name);
 
@@ -43,7 +44,11 @@ public class ForecastServiceImpl implements ForecastService {
         XmlMapper xmlMapper = new XmlMapper();
         MappingJackson2XmlHttpMessageConverter converter = new MappingJackson2XmlHttpMessageConverter(xmlMapper);
         restTemplate.getMessageConverters().add(converter);
-        return restTemplate.getForObject(url, City.class);
+        City city1 = restTemplate.getForObject(url, City.class);
+        assert city1 != null;
+        city1.setId(city.getId());
+        forecastRepository.saveAll(city1.getPrevisoes());
+        return cityMapper.toCityResponse(city1);
     }
 
 

@@ -1,6 +1,6 @@
 package com.dev.apiprevisaotempo.service.impl;
 
-import com.dev.apiprevisaotempo.dto.ForecastRequest;
+import com.dev.apiprevisaotempo.dto.request.ForecastRequest;
 import com.dev.apiprevisaotempo.entity.City;
 import com.dev.apiprevisaotempo.repository.CityRepository;
 import com.dev.apiprevisaotempo.service.CityService;
@@ -80,6 +80,7 @@ public class CityDataServiceImpl implements CityService {
         restTemplate.getMessageConverters().add(converter);
         City[] cities = restTemplate.getForObject(url, City[].class);
 
+        assert cities != null;
         for (City city : cities) {
             if (cityRepository.findByNome(city.getNome()) == null) {
                 cityRepository.save(city);

@@ -46,7 +46,7 @@
     <h1>Previsão do Tempo</h1>
 </div>
 <div class="container">
-    <p>Coloque sua cidade: <input type="text" id="input_cidade"> <button onclick="redirectToResultado()">Resultado</button></p>
+    <p>Coloque sua cidade: <input type="text" id="input_cidade"> <button onclick="obterPrevisaoDoTempo()">Resultado</button></p>
 </div>
 <footer>
     Trabalho desenvolvido por:
@@ -57,9 +57,23 @@
 </footer>
 
 <script>
-    function redirectToResultado() {
+    function obterPrevisaoDoTempo() {
         var cidade = document.getElementById("input_cidade").value;
-        window.location.href = "result.html?cidade=" + encodeURIComponent(cidade);
+
+        var dadosCidade = {
+            cityName: cidade
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/forecast/city", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var resposta = JSON.parse(xhr.responseText);
+                window.location.href = "result.html?cidade=" + resposta.nome;
+            }
+        };
+        xhr.send(JSON.stringify(dadosCidade));
     }
 </script>
 
