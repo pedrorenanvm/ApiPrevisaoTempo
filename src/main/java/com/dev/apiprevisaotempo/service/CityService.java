@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface CityService {
 
-    void fetchAndSaveCities(ForecastRequest forecastRequest);
-
     public void buscarCidades(String nomeCidade);
 
     List<City> getAllCities();

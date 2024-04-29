@@ -35,6 +35,38 @@
             background-color: #0B2F3A;
             color: white;
         }
+        footer {
+            position: absolute;
+            bottom: 0;
+            background-color: #0B2F3A;
+            color: #FFF;
+            width: 100%;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0B2F3A;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #0B2F3A; /* Mantém a mesma cor para a borda */
+            transition: background-color 0.3s;
+            margin-top: 20px; /* Adiciona margem no topo */
+            margin-left: 20px; /* Adiciona margem à esquerda */
+        }
+
+        /* Estilo para alterar a cor do botão quando hover */
+        a.button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo para remover o sublinhado padrão */
+        a.button:focus, a.button:active {
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -56,6 +88,17 @@
 
     </tbody>
 </table>
+
+<a href="javascript: history.go(-1)" class="button">Voltar</a>
+
+<footer>
+    Trabalho desenvolvido por:
+    <a href="https://github.com/brunovinicius07" style="color: #FFF;">Bruno Tavares</a>,
+    <a href="https://github.com/ingridmaciel" style="color: #FFF;">Ingrid Maciel</a>,
+    <a href="https://github.com/pedrorenan" style="color: #FFF;">Pedro Renan</a>,
+    <a href="https://github.com/VitorTavar3s" style="color: #FFF;">Vitor Tavares</a>
+</footer>
+
 
 <script>
 

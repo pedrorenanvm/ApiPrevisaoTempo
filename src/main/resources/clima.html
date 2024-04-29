@@ -35,31 +35,70 @@
             text-align: center;
             line-height: 50px;
         }
-        footer a {
-            color: #FFF;
-            margin: 0 5px;
+        button.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0B2F3A;
+            cursor: pointer;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #0B2F3A; /* Mantém a mesma cor para a borda */
+            transition: background-color 0.3s;
+            margin-top: 20px; /* Adiciona margem no topo */
         }
+
+        /* Estilo para alterar a cor do botão quando hover */
+        button.button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo para remover o sublinhado padrão */
+        button.button:focus, a.button:active {
+            outline: none;
+        }
+
+        /* Estilo para o campo de entrada de texto */
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            width: 250px; /* Ajuste conforme necessário */
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Estilo para o campo de entrada de texto quando focado */
+        input[type="text"]:focus {
+            border-color: #007bff; /* Cor quando focado */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
     </style>
 </head>
 <body>
 <div class="header">
     <h1>Previsão do Tempo</h1>
 </div>
-<form id="cityForm">
-    <p><!--Coloque sua cidade: <input type="text" id="cityName" name="cityName"-->>
-        <!--<button onclick="obterPrevisaoDoTempo()">Resultado</button>-->
-        <label for="cityName"> Nome da Cidade:</label>
-        <input type="text" id="cityName" name="cityName">
-        <button type="submit">Obter Previsão</button>
-    </p>
-</form>
+<div class="container">
+    <form id="cityForm">
+        <p>
+            <label for="cityName"> Nome da Cidade:</label>
+            <input type="text" id="cityName" name="cityName" placeholder="Digite o nome da cidade">
+        </p>
+        <p>
+            <button type="submit" class="button">Obter Previsão</button>
+        </p>
+    </form>
+</div>
 <div id="forecastResult"></div>
 <footer>
     Trabalho desenvolvido por:
-    <a href="https://github.com/brunoviniciusdev" style="color: #FFF;">Bruno Tavares</a>,
+    <a href="https://github.com/brunovinicius07" style="color: #FFF;">Bruno Tavares</a>,
     <a href="https://github.com/ingridmaciel" style="color: #FFF;">Ingrid Maciel</a>,
     <a href="https://github.com/pedrorenan" style="color: #FFF;">Pedro Renan</a>,
-    <a href="https://github.com/vitortavares1" style="color: #FFF;">Vitor Tavares</a>
+    <a href="https://github.com/VitorTavar3s" style="color: #FFF;">Vitor Tavares</a>
 </footer>
 
 <script>
@@ -91,8 +130,6 @@
     });
 
 </script>
-
-
 
 </body>
 </html>
