@@ -35,7 +35,11 @@
             width: 250px;
             margin-bottom: 20px;
         }
+        .button-container {
+            text-align: center;
+        }
         button {
+            display: inline-block;
             padding: 10px 20px;
             background-color: #0B2F3A;
             cursor: pointer;
@@ -58,19 +62,19 @@
     <h1>Login</h1>
     <form id="loginForm">
         <label for="username">Usuário:</label>
-        <input type="text" id="username" name="username" placeholder="Digite seu usuário">
+        <input type="text" id="username" name="username" placeholder="Digite o usuário">
         <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" placeholder="Digite sua senha">
-        <button type="submit">Login</button>
+        <input type="password" id="password" name="password" placeholder="Digite a senha">
+        <div class="button-container">
+            <button type="submit">Login</button>
+        </div>
     </form>
 </div>
 <script>
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Evitar o comportamento padrão de enviar o formulário
-
         var username = document.getElementById('username').value;
         var password = document.getElementById('password').value;
-
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://localhost:8080/login', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

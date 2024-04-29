@@ -22,7 +22,7 @@ public class WebSecurityConfig {
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/forecast/**")).authenticated()
+                                .requestMatchers(new AntPathRequestMatcher("/forecast/**")).permitAll()
                                 .anyRequest().authenticated()
                         )
                 .httpBasic(Customizer.withDefaults())
