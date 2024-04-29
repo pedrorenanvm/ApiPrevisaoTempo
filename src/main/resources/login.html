@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #E0F2F7;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 40px;
+        }
+        form {
+            margin-top: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 250px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0B2F3A;
+            cursor: pointer;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #0B2F3A;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:focus, button:active {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Usuário:</label>
+        <input type="text" id="username" name="username" placeholder="Digite seu usuário">
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" placeholder="Digite sua senha">
+        <button type="submit">Login</button>
+    </form>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar o comportamento padrão de enviar o formulário
+
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/login', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Se a autenticação for bem-sucedida, redireciona para a página de clima
+                window.location.href = 'clima.html';
+            } else {
+                // Se ocorrer um erro na autenticação, exibe uma mensagem de erro
+                alert('Erro ao fazer login. Verifique seu nome de usuário e senha.');
+            }
+        };
+        xhr.onerror = function() {
+            // Se ocorrer um erro de rede, exibe uma mensagem de erro
+            alert('Erro de rede ao fazer login.');
+        };
+        xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+    });
+</script>
+</body>
+</html>
