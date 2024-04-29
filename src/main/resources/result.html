@@ -49,38 +49,79 @@
         <th>Temperatura Máxima</th>
         <th>Temperatura Mínima</th>
         <th>IUV</th>
+        <th>Tempo</th>
     </tr>
     </thead>
     <tbody id="forecastBody">
-    <!-- Os dados serão preenchidos aqui dinamicamente -->
+
     </tbody>
 </table>
 
 <script>
-    var urlParams = new URLSearchParams(window.location.search);
-    var cidade = urlParams.get('cidade');
 
-    document.getElementById('cityName').innerText = cidade;
+   var siglaDescricao = {
+       "ec": "Encoberto com Chuvas Isoladas",
+       "ci": "Chuvas Isoladas",
+       "c": "Chuva",
+       "in": "Instável",
+       "pp": "Poss. de Pancadas de Chuva",
+       "cm": "Chuva pela Manhã",
+       "cn": "Chuva a Noite",
+       "pt": "Pancadas de Chuva a Tarde",
+       "pm": "Pancadas de Chuva pela Manhã",
+       "np": "Nublado e Pancadas de Chuva",
+       "pc": "Pancadas de Chuva",
+       "pn": "Parcialmente Nublado",
+       "cv": "Chuvisco",
+       "ch": "Chuvoso",
+       "t": "Tempestade",
+       "ps": "Predomínio de Sol",
+       "e": "Encoberto",
+       "n": "Nublado",
+       "cl": "Céu Claro",
+       "nv": "Nevoeiro",
+       "g": "Geada",
+       "ne": "Neve",
+       "nd": "Não Definido",
+       "pnt": "Pancadas de Chuva a Noite",
+       "psc": "Possibilidade de Chuva",
+       "pcm": "Possibilidade de Chuva pela Manhã",
+       "pct": "Possibilidade de Chuva a Tarde",
+       "pcn": "Possibilidade de Chuva a Noite",
+       "npt": "Nublado com Pancadas a Tarde",
+       "npn": "Nublado com Pancadas a Noite",
+       "ncn": "Nublado com Poss. de Chuva a Noite",
+       "nct": "Nublado com Poss. de Chuva a Tarde",
+       "ncm": "Nubl. c/ Poss. de Chuva pela Manhã",
+       "npm": "Nublado com Pancadas pela Manhã",
+       "npp": "Nublado com Possibilidade de Chuva",
+       "vn": "Variação de Nebulosidade",
+       "ct": "Chuva a Tarde",
+       "ppn": "Poss. de Panc. de Chuva a Noite",
+       "ppt": "Poss. de Panc. de Chuva a Tarde",
+       "ppm": "Poss. de Panc. de Chuva pela Manhã"
+   };
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:8080/forecast/city", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var resposta = JSON.parse(xhr.responseText);
-            var previsoes = resposta.previsoes;
-            var tableBody = document.getElementById('forecastBody');
-            previsoes.forEach(function(previsao) {
-                var row = document.createElement('tr');
-                row.innerHTML = '<td>' + previsao.dia + '</td>' +
-                    '<td>' + previsao.maxima + '°C</td>' +
-                    '<td>' + previsao.minima + '°C</td>' +
-                    '<td>' + previsao.iuv + '</td>';
-                tableBody.appendChild(row);
-            });
-        }
-    };
-    xhr.send(JSON.stringify({ cidade: cidade }));
+   var urlParams = new URLSearchParams(window.location.search);
+   var cityName = urlParams.get('cityName');
+   var forecastData = JSON.parse(decodeURIComponent(urlParams.get('forecast')));
+
+   document.getElementById('cityName').innerText = cityName;
+
+   var previsoes = forecastData.previsoes;
+   var tableBody = document.getElementById('forecastBody');
+   previsoes.forEach(function(previsao) {
+       var row = document.createElement('tr');
+       row.innerHTML = '<td>' + previsao.dia + '</td>' +
+           '<td>' + previsao.maxima + '°C</td>' +
+           '<td>' + previsao.minima + '°C</td>' +
+           '<td>' + previsao.iuv + '</td>'+
+           '<td>' + siglaDescricao[previsao.tempo] + '</td>';
+       tableBody.appendChild(row);
+   });
+
+
+
 </script>
 
 </body>

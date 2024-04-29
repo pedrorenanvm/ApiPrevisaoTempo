@@ -45,9 +45,15 @@
 <div class="header">
     <h1>Previsão do Tempo</h1>
 </div>
-<div class="container">
-    <p>Coloque sua cidade: <input type="text" id="input_cidade"> <button onclick="obterPrevisaoDoTempo()">Resultado</button></p>
-</div>
+<form id="cityForm">
+    <p><!--Coloque sua cidade: <input type="text" id="cityName" name="cityName"-->>
+        <!--<button onclick="obterPrevisaoDoTempo()">Resultado</button>-->
+        <label for="cityName"> Nome da Cidade:</label>
+        <input type="text" id="cityName" name="cityName">
+        <button type="submit">Obter Previsão</button>
+    </p>
+</form>
+<div id="forecastResult"></div>
 <footer>
     Trabalho desenvolvido por:
     <a href="https://github.com/brunoviniciusdev" style="color: #FFF;">Bruno Tavares</a>,
@@ -57,25 +63,36 @@
 </footer>
 
 <script>
-    function obterPrevisaoDoTempo() {
-        var cidade = document.getElementById("input_cidade").value;
 
-        var dadosCidade = {
-            cityName: cidade
-        };
+
+    document.getElementById('cityForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita o comportamento padrão de enviar o formulário
+
+        var cityName = document.getElementById('cityName').value;
+
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/forecast/city", true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var resposta = JSON.parse(xhr.responseText);
-                window.location.href = "result.html?cidade=" + resposta.nome;
+        xhr.open('POST', 'http://localhost:8080/forecast/city', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // Se a requisição for bem-sucedida, redireciona para a página de resultados
+                window.location.href = 'result.html?cityName=' + encodeURIComponent(cityName) + '&forecast=' + encodeURIComponent(xhr.responseText);
+            } else {
+                // Se ocorrer um erro na requisição, exibe uma mensagem de erro
+                document.getElementById('forecastResult').innerHTML = 'Erro ao obter previsão do tempo.';
             }
         };
-        xhr.send(JSON.stringify(dadosCidade));
-    }
+        xhr.onerror = function() {
+            // Se ocorrer um erro de rede, exibe uma mensagem de erro
+            document.getElementById('forecastResult').innerHTML = 'Erro de rede ao obter previsão do tempo.';
+        };
+        xhr.send(JSON.stringify({ "cityName": cityName }));
+    });
+
 </script>
+
+
 
 </body>
 </html>
