@@ -15,6 +15,9 @@ import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConve
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @AllArgsConstructor
 @Service
 public class ForecastServiceImpl implements ForecastService {
@@ -47,6 +50,15 @@ public class ForecastServiceImpl implements ForecastService {
         City city1 = restTemplate.getForObject(url, City.class);
         assert city1 != null;
         city1.setId(city.getId());
+
+        for (Forecast forecast : city1.getPrevisoes()) {
+            String dataString = forecast.getDia();
+            LocalDate data = LocalDate.parse(dataString);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataFormatada = data.format(formatter);
+            forecast.setDia(dataFormatada);
+        }
+
         forecastRepository.saveAll(city1.getPrevisoes());
         return cityMapper.toCityResponse(city1);
     }
